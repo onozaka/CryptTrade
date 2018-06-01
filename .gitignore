@@ -1,4 +1,5 @@
 *~
-__pychache__/
-/module/__pychache__/
-/module/__pychache__/*
+
+/module/*~
+
+**/__pychache__/
