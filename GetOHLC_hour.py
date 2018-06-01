@@ -16,7 +16,7 @@ PicDir = '../pic'
 dt_now = datetime.datetime.now()
 filename = str(dt_now.year) + str(dt_now.month).zfill(2) + str(dt_now.day).zfill(2)
 DataMod = DataModule.DataModule(DataDir, filename)
-DataDay = dt_now.day
+DataDay = int(dt_now.day)
 DataMonth = dt_now.month
 CryWat = CryptWatchModule.CryptWatchModule()
 #sec
@@ -42,16 +42,17 @@ last_stamp = now_stamp - init_back*delta*60
 ohlc_list = CryWat.GetOHLC(now_stamp, last_stamp, 60)
 if(len(ohlc_list) != 0):
     DataMod.AddOHLC(ohlc_list)
+    print(TimeModule.GetTime_j(last_stamp) + ' - ' + TimeModule.GetTime_j(now_stamp))
+    print('remain :' + str(CryWat.remain), end=' ')
+    print('cost :' + str(CryWat.cost))
+
     update_status = GraphModule.MakeGraph(ohlc_list, PicDir)
     if(update_status != 'None'):
         print(update_status)
         TwitterModule.TweetPic(update_status)
     else:
         print(update_status)
-    
-    print(TimeModule.GetTime_j(now_stamp) + ' - ' + TimeModule.GetTime_j(last_stamp))
-    print('remain :' + str(CryWat.remain), end=' ')
-    print('cost :' + str(CryWat.cost))
+        
     print()
 else:
     print('something wrong')
@@ -62,11 +63,14 @@ last_stamp = now_stamp
 #====GetOHLC every hour====
 while(True):
     dt_now = datetime.datetime.now()
-    if((DataDay != dt_now.day) and (dt_now.hour == 1)):
+    if((DataDay != int(dt_now.day)) and (dt_now.hour == 1)):
         del DataMod
         filename = str(dt_now.year) + str(dt_now.month).zfill(2) + str(dt_now.day).zfill(2)
         DataMod = DataModule.DataModule(DataDir, filename)
-        DateDay = dt_now.day
+        print(DataDay, end=' ')
+        print(int(dt_now.day))
+        print(DataDay != int(dt_now.day))
+        DateDay = int(dt_now.day)
         
     now_stamp = TimeModule.GetUtime_j(dt_now.year, dt_now.month, dt_now.day, dt_now.hour, 0, 0)
     if(now_stamp - last_stamp >= delta*60 ):
@@ -74,16 +78,17 @@ while(True):
 
         if(len(ohlc_list) != 0):
             DataMod.AddOHLC(ohlc_list)
+            print(TimeModule.GetTime_j(last_stamp) + ' - ' + TimeModule.GetTime_j(now_stamp))
+            print('remain :' + str(CryWat.remain), end=' ')
+            print('cost :' + str(CryWat.cost))
+            
             update_status = GraphModule.MakeGraph(ohlc_list, PicDir)
             if(update_status != 'None'):
                 print(update_status)
                 TwitterModule.TweetPic(update_status)
             else:
                 print(update_status)
-            
-            print(TimeModule.GetTime_j(now_stamp) + ' - ' + TimeModule.GetTime_j(last_stamp))
-            print('remain :' + str(CryWat.remain), end=' ')
-            print('cost :' + str(CryWat.cost))
+                        
             print()
         else:
             print('something wrong')
@@ -92,4 +97,5 @@ while(True):
         time.sleep(60*s_delta)
     else:
         time.sleep(60*s_delta)
+        
 #========
