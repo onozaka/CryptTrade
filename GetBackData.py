@@ -1,7 +1,7 @@
 #GetBackData.py
 #Modifled 2018/5/24
 import sys
-sys.path.append('./src')
+sys.path.append('../module')
 
 import CryptWatchModule
 import DataModule
