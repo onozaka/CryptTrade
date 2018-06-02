@@ -67,10 +67,7 @@ while(True):
         del DataMod
         filename = str(dt_now.year) + str(dt_now.month).zfill(2) + str(dt_now.day).zfill(2)
         DataMod = DataModule.DataModule(DataDir, filename)
-        print(DataDay, end=' ')
-        print(int(dt_now.day))
-        print(DataDay != int(dt_now.day))
-        DateDay = int(dt_now.day)
+        DataDay = int(dt_now.day)
         
     now_stamp = TimeModule.GetUtime_j(dt_now.year, dt_now.month, dt_now.day, dt_now.hour, 0, 0)
     if(now_stamp - last_stamp >= delta*60 ):
